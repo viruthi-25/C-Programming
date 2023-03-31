@@ -1,0 +1,60 @@
+#include<stdio.h>
+struct student
+{
+int rno;
+char name[20];
+int mark[6];
+int total;
+}s[20],t[20];
+int main()
+{
+int i,j,nos;
+FILE*fp;
+char fname;
+printf("enter the filename\n");
+scanf("%s",fname);
+fp=fopen(fname,"ab");
+printf("enter the no. of students\n");
+scanf("%d",&nos);
+for(i=0;i<nos;i++)
+{
+printf("\nenter the roll no\n");
+scanf("%d",&s[i].rno);
+printf("enter the name\n");
+scanf("%s",s[i].name);
+printf("enter the 6 subject mark\n");
+for(j=0;j<6;j++)
+{
+scanf("%d",&s[i].mark[j]);
+}
+}
+for(i=0;i<nos;i++)
+{
+s[i].total=0;
+for(j=0;j<6;j++)
+{
+s[i].total=s[i].total+s[i].mark[j];
+}
+fwrite(&s[i],sizeof(struct student),i,fp);
+}
+rewind(fp);
+for(i=0;i<nos;i++)
+{
+fread(&t[i],sizeof(struct student),i,fp);
+}
+printf("\n-------------------------------------------------------------------------------------------------------------\n");
+printf("\nROLL NO\tNAME\tENG\tMATHS\tPHY\tCHEM\tCOMP\tEG\ttotal\n");
+printf("\n-------------------------------------------------------------------------------------------------------------\n");
+for(i=0;i<nos;i++)
+{
+printf("\n%d\t%s\t",s[i].rno,s[i].name);
+for(j=0;j<6;j++)
+{
+printf("%d\t",s[i].mark[j]);
+}
+printf("%d",s[i].total);
+}
+printf("\n----------------------------------------------------------------------------------------------------------------\n");
+fclose(fp);
+return 0;
+}
